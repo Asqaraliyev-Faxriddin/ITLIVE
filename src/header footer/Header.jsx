@@ -1,90 +1,131 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useUserStore } from "../store/userstore";
-import "./header.css"
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import { Drawer } from "@mui/material";
 
 function Header() {
-  const {isDark,setIsDark} = useUserStore()
+  const { isDark, setIsDark } = useUserStore();
+  const location = useLocation();
+  const [openMenu, setOpenMenu] = useState(false);
 
-
-
+  const menuItems = [
+    { name: "Asosiy", path: "/" },
+    { name: "Kurslar", path: "/course" },
+    { name: "Biz haqimizda", path: "/my" },
+    { name: "Bog'lanish", path: "/boglanish" },
+  ];
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white/30 backdrop-blur-md" >
-      <div className=" rounded-1xl w-full h-[86px] shadow-md flex justify-around items-center px-10">
-        
-        <div className="flex gap-10 items-center justify-center">
-          <img src={isDark ? "/img/logo.svg" : "/img/logo-dark.svg"} alt="logo" className="h-[50px] w-[124px]" />
-          
+    <header className="fixed top-0 left-0 w-full z-50 bg-white/30 backdrop-blur-md shadow-md">
+      <div className="max-w-[1200px] ml-34 h-[86px] flex justify-between items-center px-6 md:px-10">
+        <div className="flex items-center gap-8 mr-[223px]">
+          <Link to="/">
+            <img
+              src={isDark ? "./img/logo.svg" : "./img/logo-dark.svg"}
+              alt="logo"
+              className="h-[50px] w-[120px]"
+            />
+          </Link>
 
-          <div>
-          <ul   className={`${isDark ? "text-white flex gap-6 text-[18px]" : "text-black  flex gap-6 text-[18px]"}`}>
-          <li
-              className={`transition-transform cursor-pointer ${
-                location.pathname === "/" ? "active" : ""
-              }`}
-            >
-              <Link to="/">Asosiy</Link>
-            </li>
-
-
-             <li
-              className={`transition-transform cursor-pointer ${
-                location.pathname === "/course" ? "active" : ""
-              }`}
-            >
-              <Link to="/course">Kurslar</Link>
-            </li>
-
-
-            <li
-              className={`transition-transform cursor-pointer ${
-                location.pathname === "/my" ? "active" : ""
-              }`}
-            >
-              <Link to="/my">Biz haqimizda</Link>
-            </li>
-            <li
-              className={`transition-transform cursor-pointer ${
-                location.pathname === "/bohlanish" ? "active" : ""
-              }`}
-            >
-              <Link to="/boglanish">Bog'lanish</Link>
-            </li>
-           
+          <ul className={`hidden md:flex gap-6 text-[18px] ${isDark ? "text-white" : "text-black"}`}>
+            {menuItems.map((item) => (
+              <li
+                key={item.path}
+                className={`transition-transform cursor-pointer ${
+                  location.pathname === item.path ? "font-bold" : ""
+                }`}
+              >
+                <Link to={item.path}>{item.name}</Link>
+              </li>
+            ))}
           </ul>
         </div>
-        </div>
-
-        
 
         <div className="flex items-center gap-4">
-          <div onClick={()=>{
-            if (isDark) {
-                document.body.style.backgroundColor = "#ffffff";
-               
-              } else {
-            
-                document.body.style.backgroundColor = "#0B1222";
-              }
+          <button
+            onClick={() => {
+              document.body.style.backgroundColor = isDark ? "#ffffff" : "#0B1222";
               setIsDark(!isDark);
-        
-          }} className=" w-[38px] bg-gray-300 hover:shadow-md hover:cursor-pointer h-[40px] flex items-center justify-center rounded-full">
-            <img className="object-cover opacity-70 w-[24px] h-[24px]"
-             src={isDark ? "/img/moon.png" : "/img/sun.png"}
+            }}
+            className="w-[38px] h-[40px] flex items-center justify-center rounded-full bg-gray-300 hover:shadow-md transition"
+          >
+            <img
+              src={isDark ? "/img/moon.png" : "/img/sun.png"}
               alt="theme toggle"
+              className="w-[24px] h-[24px] object-cover opacity-70"
             />
-          </div>
+          </button>
 
-          <a  href="#" id="orqa"className={`px-9 py-3 rounded-xl hover:translate-y-[2px] transition-transform 
-              ${isDark ? "bg-white text-black" : "bg-black text-white"}`}
-          >   Examify </a>
-          <a href="/register"  className="bg-blue-600 text-white px-9 py-3 rounded-xl hover:translate-y-[2px] transition-transform"
+          <Link
+            to="#"
+            className={`hidden md:block px-8 py-2.5 rounded-xl transition-transform hover:-translate-y-0.5 ${
+              isDark ? "bg-white text-black" : "bg-black text-white"
+            }`}
+          >
+            Examify
+          </Link>
+          <Link
+            to="/register"
+            className="hidden md:block bg-blue-600 text-white px-8 py-2.5 rounded-xl transition-transform hover:-translate-y-0.5"
           >
             Kirish
-          </a>
+          </Link>
+
+          <button className="md:hidden" onClick={() => setOpenMenu(true)}>
+            <MenuIcon className={isDark ? "text-white" : "text-black"} fontSize="large" />
+          </button>
         </div>
       </div>
+
+      <Drawer anchor="left" open={openMenu} onClose={() => setOpenMenu(false)}>
+        <div className="w-[250px] p-4 flex flex-col h-full">
+          <div className="flex justify-between items-center">
+            <Link to="/" onClick={() => setOpenMenu(false)}>
+              <img
+                src={isDark ? "./img/logo.svg" : "./img/logo-dark.svg"}
+                alt="logo"
+                className="h-[40px] w-auto"
+              />
+            </Link>
+            <button onClick={() => setOpenMenu(false)}>
+              <CloseIcon />
+            </button>
+          </div>
+
+          <ul className="flex flex-col gap-4 mt-6 text-[18px]">
+            {menuItems.map((item) => (
+              <li
+                key={item.path}
+                onClick={() => setOpenMenu(false)}
+                className={`cursor-pointer ${location.pathname === item.path ? "font-bold" : ""}`}
+              >
+                <Link to={item.path}>{item.name}</Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-col gap-3 mt-auto mb-4">
+            <Link
+              to="#"
+              className={`px-6 py-3 rounded-xl text-center ${
+                isDark ? "bg-white text-black" : "bg-black text-white"
+              }`}
+              onClick={() => setOpenMenu(false)}
+            >
+              Examify
+            </Link>
+            <Link
+              to="/register"
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl text-center"
+              onClick={() => setOpenMenu(false)}
+            >
+              Kirish
+            </Link>
+          </div>
+        </div>
+      </Drawer>
     </header>
   );
 }
