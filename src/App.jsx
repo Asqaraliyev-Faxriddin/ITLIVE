@@ -1,0 +1,41 @@
+import { useState } from 'react'
+import * as React from "react";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Button from "@mui/material/Button";
+import darkTheme from "./theme";
+import Register from './register'
+import Login from './Login'
+import Home from './home'
+import Code from './code'
+import Profile from './profile'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+
+
+  
+      <BrowserRouter>
+
+
+      <Routes>
+      <Route path="//register" element={<Register />} />
+      <Route path="/my/profile" element={<Profile />} />
+
+      <Route path="/Login" element={<Login />} /> 
+      <Route path="/code" element={<Code />} /> 
+      <Route path="/" element={<Home />} /> 
+
+
+    </Routes>
+  </BrowserRouter>
+
+    </>
+  )
+}
+
+export default App

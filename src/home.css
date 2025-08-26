@@ -1,0 +1,4 @@
+.mySwiper .swiper-pagination {
+    position: relative; /* staticdan farqli ravishda joylashadi */
+    margin-top: 30px;   /* dotsni pastroqqa tushiradi */
+  }
