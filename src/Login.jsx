@@ -23,7 +23,7 @@ const [password, setPassword] = useState("");
     console.log("Bosildi");
 
     try {
-      const res = await axios.post("http://13.62.102.27:3000/auth/login", {
+      const res = await axios.post("http://51.20.98.175:3000/auth/login", {
         phone,
         password,
       });

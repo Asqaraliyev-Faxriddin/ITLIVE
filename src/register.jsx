@@ -32,7 +32,7 @@ function Register() {
 
     const send = { type: "register", phone };
     axios
-      .post("http://13.62.102.27:3000/verification/send", send)
+      .post("http://51.20.98.175:3000/verification/send", send)
       .then(()=>yoz() )
       .then(() => navigate("/code"))
       .catch(err => alert(err.response?.data?.message || "Xatolik yuz berdi"));

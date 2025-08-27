@@ -10,49 +10,69 @@
   import Rating from '@mui/material/Rating';
   import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Course from './course';
   function Home() {
     const { isDark } = useUserStore()
     const [active, setActive] = useState("Barcha kurslar");
-    const [mentors, setMentors] = useState([]);
-    const [courses, setCourses] = useState([]);
+    const {mentors, setMentors} = useUserStore()
+    const {courses, setCourses} = useUserStore()
 
 
     let navigate = useNavigate()
 
     useEffect(() => {
-
-      const fetchCourses = async () => {
+      const fetchData = async () => {
         try {
       
-          const res = await axios.get("http://13.62.102.27:3000/course/all");
-  
-          if (res.data && res.data.length > 0) {
-            const mappedCourses = res.data.map(course => ({
-              id: course.id,
-              title: course.name,
-              teacher: course.teacherName || "No teacher",
-              discount: course.discount || 0,
-              price: course.price || 0,
-              image: course.image
-                ? `http://13.62.102.27:3000/course/url/${course.image}`
-                : "./img/foundation.png",
-            }));
-            console.log("kurslar",mappedCourses);
-            setCourses(mappedCourses);
+          const loginRes = await axios.post("http://51.20.98.175:3000/auth/login", {
+            phone: "+998903641207",
+            password: "12345678",
+          });
+        
+          
+          if (loginRes.status === 200 || loginRes.status === 201) {
+            const token = loginRes.data?.AccessToken;
+            if (!token) return alert("Token topilmadi!");
+    
+       
+            const coursesRes = await axios.get("http://51.20.98.175:3000/course/all", {
+              headers: { Authorization: `Bearer ${token}` },
+              search:"fffffff"
+            });
+
+            console.log(coursesRes.data.data[0]);
             
+
+            if (coursesRes.data) {
+              const mappedCourses = coursesRes.data.data.map(course => ({
+                id: course.id,
+                title: course.name || "No title",
+                teacher: course.mentor.fullName || "No teacher",
+                discount: course.discount || 0,
+                price: course.price || 0,
+                image: course.banner
+                  ? `http://51.20.98.175:3000/banner/url/${course.banner}`
+                  : "./img/php.png",
+              }));
+              setCourses(mappedCourses);
+            }
+    
+          
+          } else {
+            alert("Login muvaffaqiyatsiz!");
           }
         } catch (err) {
-          console.error("Kurslarni olishda xato:", err);
+          console.error(err);
         }
       };
-  
-      fetchCourses();
+    
+      fetchData();
     }, []);
-   
+    
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const loginRes = await axios.post("http://13.62.102.27:3000/auth/login", {
+          const loginRes = await axios.post("http://51.20.98.175:3000/auth/login", {
             phone: "+998903641207",
             password: "12345678",
           });
@@ -61,7 +81,7 @@ import { useNavigate } from 'react-router-dom';
             const token = loginRes.data?.AccessToken;
             if (!token) return alert("Token topilmadi!");
     
-            const res2 = await axios.get("http://13.62.102.27:3000/api/users/mentors", {
+            const res2 = await axios.get("http://51.20.98.175:3000/api/users/mentors", {
               headers: { Authorization: `Bearer ${token}` },
             });
     
@@ -70,7 +90,7 @@ import { useNavigate } from 'react-router-dom';
                 name: mentor.fullName,
                 text: `${mentor.mentorProfile.job} ustoz`,
                 img: mentor.image
-                  ? `http://13.62.102.27:3000/profile/url/${mentor.image}`
+                  ? `http://51.20.98.175:3000/profile/url/${mentor.image}`
                   : "./img/oybek.png",
               }));
     
@@ -98,7 +118,7 @@ import { useNavigate } from 'react-router-dom';
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const loginRes = await axios.post("http://13.62.102.27:3000/auth/login", {
+          const loginRes = await axios.post("http://51.20.98.175:3000/auth/login", {
             phone: "+998903641207",
             password: "12345678",
           });
@@ -111,7 +131,7 @@ import { useNavigate } from 'react-router-dom';
             }
 
             const res2 = await axios.get(
-              "http://13.62.102.27:3000/api/users/mentors",
+              "http://51.20.98.175:3000/api/users/mentors",
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -126,7 +146,7 @@ import { useNavigate } from 'react-router-dom';
                 name: mentor.fullName,
                 text: `${mentor.mentorProfile.job} ustoz`,
                 img: mentor.image
-                ? `http://13.62.102.27:3000/profile/url/${mentor.image}`
+                ? `http://51.20.98.175:3000/profile/url/${mentor.image}`
                 : "./img/oybek.png"
               }));
 
@@ -151,160 +171,172 @@ import { useNavigate } from 'react-router-dom';
     return (
       <>
         <Header/>
+        
+          <main className={`w-full pt-14 ${isDark ? "bg-gray-900 text-white" : "bg-white  text-black"}`}  >
+            <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-16 gap-10">
+              <div className="flex-1 space-y-5 text-center md:text-left">
+                <h1 className="text-4xl md:text-5xl font-bold leading-snug">
+                  <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
+                    Kelajak kasblarini
+                  </span>{" "}
+                  <span>{`biz bilan o‘rganing!`}</span>
+                </h1>
+                <p className={`text-lg ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                  Dasturlashni arzon va sifatli o‘qib, o‘z karyerangizni quring.
+                </p>
+                <button className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-4xl text-lg font-lg text-[15px] hover:bg-blue-400 transition">
+                  Kurslar bilan tanishish
+                </button>
+              </div>
+              <div className="flex-1 flex justify-center">
+                <img src="./img/home.png" alt="Hero" className="max-w-full md:max-w-[500px]" />
+              </div>
+            </div>
+          </main>
 
-        <main className={`w-full mt-28 ${isDark ? "bg-gray-900 text-white" : "bg-white text-black"}`}>
-          <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-16 gap-10">
-            <div className="flex-1 space-y-5 text-center md:text-left">
-              <h1 className="text-4xl md:text-5xl font-bold leading-snug">
-                <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
-                  Kelajak kasblarini
-                </span>{" "}
-                <span>{`biz bilan o‘rganing!`}</span>
-              </h1>
-              <p className={`text-lg ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-                Dasturlashni arzon va sifatli o‘qib, o‘z karyerangizni quring.
+          <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10`}>
+            <div className="max-w-[1200px] mx-auto text-center px-4">
+              <p className="text-3xl md:text-4xl font-bold">Ommabop kurslar</p>
+              <p className={`mt-4 max-w-3xl mx-auto ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                Kasbga yo'naltirilgan amaliy mashg'ulotlar yordamida tez va samarali ravishda mutaxassislar safiga qo'shiling. Har bir mashg'ulot sohaning yetakchi mutaxassislari tomonidan eng zamonaviy o'quv dasturi asosida tayyorlangan.
               </p>
-              <button className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-4xl text-lg font-lg text-[15px] hover:bg-blue-400 transition">
-                Kurslar bilan tanishish
-              </button>
             </div>
-            <div className="flex-1 flex justify-center">
-              <img src="./img/home.png" alt="Hero" className="max-w-full md:max-w-[500px]" />
+
+            <div className="max-w-[1200px] mx-auto mt-8 flex flex-wrap justify-center md:justify-start gap-4 px-4">
+              {["Barcha kurslar","Backend","Frontend","Foundation","Mobil","IT Matematika","Buxgalteriya"].map((btn)=>(
+                <button 
+                  key={btn}
+                  onClick={()=>setActive(btn)}
+                  className={`border border-blue-600 py-2 px-5 rounded-[9px] text-[14px] transition ${
+                    active===btn 
+                    ? "text-white bg-blue-500 font-semibold"
+                    : `${isDark ? "text-blue-300 hover:bg-gray-800" : "text-blue-500 hover:bg-blue-50"}`
+                  }`}
+                >
+                  {btn}
+                </button>
+              ))}
             </div>
-          </div>
-        </main>
+          </section>
 
-        <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10`}>
-          <div className="max-w-[1200px] mx-auto text-center px-4">
-            <p className="text-3xl md:text-4xl font-bold">Ommabop kurslar</p>
-            <p className={`mt-4 max-w-3xl mx-auto ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-              Kasbga yo'naltirilgan amaliy mashg'ulotlar yordamida tez va samarali ravishda mutaxassislar safiga qo'shiling. Har bir mashg'ulot sohaning yetakchi mutaxassislari tomonidan eng zamonaviy o'quv dasturi asosida tayyorlangan.
-            </p>
-          </div>
-
-          <div className="max-w-[1200px] mx-auto mt-8 flex flex-wrap justify-center md:justify-start gap-4 px-4">
-            {["Barcha kurslar","Backend","Frontend","Foundation","Mobil","IT Matematika","Buxgalteriya"].map((btn)=>(
-              <button 
-                key={btn}
-                onClick={()=>setActive(btn)}
-                className={`border border-blue-600 py-2 px-5 rounded-[9px] text-[14px] transition ${
-                  active===btn 
-                  ? "text-white bg-blue-500 font-semibold"
-                  : `${isDark ? "text-blue-300 hover:bg-gray-800" : "text-blue-500 hover:bg-blue-50"}`
-                }`}
-              >
-                {btn}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map(course => (
-          <div key={course.id} className="shadow-md rounded-[8px] p-5">
-            <img
-              src={course.image}
-              alt={course.title}
-              className="rounded-[4px] mb-3 w-full h-[200px] object-cover"
-            />
-            <span className="flex gap-4 mb-2">
-              <img src="./img/user.png" alt="" />
-              {course.teacher}
-            </span>
-            <h1 className="text-[22px] md:text-[26px] font-bold">{course.title}</h1>
-            <p className={`mt-1 text-[18px] ${isDark ? "text-gray-300" : "text-gray-500"}`}>
-              Chegirma: <span className="font-bold float-right text-[20px]">{course.discount}%</span>
-            </p>
-            <p className={`mt-1 mb-2 ${isDark ? "text-gray-300" : "text-gray-500"}`}>Kurs narxi:</p>
-            <span className="opacity-90 flex justify-between">
-              <span className="line-through">{Math.round(course.price / (1 - course.discount/100))} uzs</span>
-              <span className="font-bold text-[20px]">{course.price} uzs</span>
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex justify-center mt-6">
-        <button className="px-9 py-[9px] bg-blue-600 text-white rounded-4xl text-[15px] hover:bg-blue-400 transition">
-          Ko'proq ko'rish
-        </button>
-      </div>
-    </section>
-
-        <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
-          <h1 className="font-bold text-3xl md:text-4xl text-center mb-4">Tajribali Mentorlar</h1>
-          <p className={`text-center text-[18px] md:text-[20px] ${isDark?"text-gray-300":"text-gray-600"}`}>
-            Barcha kurslarimiz tajribali mentorlar tomonidan tayyorlangan
-          </p>
-
-          <div className="max-w-[1200px] mx-auto text-center px-4">
-            <Swiper
-              breakpoints={{
-                320: { slidesPerView: 1, spaceBetween: 10 },
-                640: { slidesPerView: 2, spaceBetween: 15 },
-                1024: { slidesPerView: 3, spaceBetween: 20 },
-              }}
-              pagination={{ clickable: true }}
-              modules={[Pagination]}
-              className="mySwiper mt-8"
-            >
-              {mentors.map((m,i)=>(
-                <SwiperSlide key={i}>
-                  <div className="group relative rounded-xl h-[420px] flex flex-col justify-end mt-6 overflow-hidden">
-                    <img src={m.img} alt={m.name} className="rounded-2xl w-full h-full object-cover group-hover:scale-105 transition-all duration-700"/>
-                    <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white p-4 rounded-b-2xl opacity-0 translate-y-4 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0">
-                      <h3 className="font-bold text-lg">{m.name}</h3>
-                      <p className="text-sm">{m.text}</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </section>
-
-        <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
-          <div className="max-w-[1200px] mx-auto text-center px-4">
-            <h2 className="text-3xl font-bold mb-2">Izohlar</h2>
-            <p className={`${isDark?"text-gray-300":"text-gray-600"} mb-10`}>
-              O'quvchilarimiz tomonidan qoldirilgan izohlar
-            </p>
-
-            <Swiper
-              breakpoints={{
-                320: { slidesPerView: 1, spaceBetween: 10 },
-                640: { slidesPerView: 2, spaceBetween: 15 },
-                1024: { slidesPerView: 3, spaceBetween: 20 },
-              }}
-              pagination={{ clickable: true }}
-              modules={[Pagination]}
-              className="mySwiper"
-            >
-              {reviews.map((r,i)=>(
-                <SwiperSlide key={i}>
-                  <div className={`shadow-md rounded-xl p-6 text-left h-[230px] flex flex-col justify-between ${isDark?"bg-gray-800 text-white":"bg-white text-black"}`}>
-                    <span><img src="./img/quote.png" alt="quote" className="w-12 h-12"/></span>
-                    <p className="font-medium mb-4">{r.text}</p>
-                    <div className="flex items-center gap-3">
-                      <img src={r.img} alt={r.name} className="w-10 h-10 rounded-full"/>
-                      <div>
-    <h4 className="font-semibold">{r.name}</h4>
-    <div className="flex items-center gap-2 mt-2 mb-2">
-      <Rating value={5} readOnly size="small" /> 
-      <span className="text-sm text-gray-500">4 oy oldin</span>
+    <div key={course.id} className={`rounded-[8px] p-5 transition ${
+      isDark 
+        ? "bg-gray-800 text-white shadow-none" 
+        : "bg-white text-black shadow-md"
+    }`} >
+      <img
+        src={course.image}
+        alt={course.title}
+        className="rounded-[4px] mb-3 w-full h-[200px] object-cover"
+      />
+      <span className="flex gap-4 mb-2">
+        <img src="./img/user.png" alt="" />
+        {course.teacher}
+      </span>
+      <h1 className="text-[22px] md:text-[26px] font-bold">{course.title}</h1>
+      <p className={`mt-1 text-[18px] ${isDark ? "text-gray-300" : "text-gray-500"}`}>
+        Chegirma: <span className="font-bold float-right text-[20px]">{course.discount}%</span>
+      </p>
+      <p className={`mt-1 mb-2 ${isDark ? "text-gray-300" : "text-gray-500"}`}>Kurs narxi:</p>
+      <span className="opacity-90 flex justify-between">
+        <span className="line-through">
+          {course.discount
+            ? Math.round(course.price / (1 - course.discount / 100))
+            : course.price} uzs
+        </span>
+        <span className="font-bold text-[20px]">{course.price} uzs</span>
+      </span>
     </div>
-    <p className="text-sm">HTML CSS kursi o‘quvchisi</p>
-  </div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+  ))}
+
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <button className="px-9 py-[9px] bg-blue-600 text-white rounded-4xl text-[15px] hover:bg-blue-400 transition">
+            Ko'proq ko'rish
+          </button>
+        </div>
+      </section>
+
+          <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
+            <h1 className="font-bold text-3xl md:text-4xl text-center mb-4">Tajribali Mentorlar</h1>
+            <p className={`text-center text-[18px] md:text-[20px] ${isDark?"text-gray-300":"text-gray-600"}`}>
+              Barcha kurslarimiz tajribali mentorlar tomonidan tayyorlangan
+            </p>
+
+            <div className="max-w-[1200px] mx-auto text-center px-4">
+  <Swiper
+    slidesPerView={mentors.length < 3 ? mentors.length : 3} // dinamik
+    breakpoints={{
+      320: { slidesPerView: Math.min(mentors.length, 1), spaceBetween: 10 },
+      640: { slidesPerView: Math.min(mentors.length, 2), spaceBetween: 15 },
+      1024: { slidesPerView: Math.min(mentors.length, 3), spaceBetween: 20 },
+    }}
+    pagination={{ clickable: true }}
+    modules={[Pagination]}
+    className="mySwiper mt-8"
+  >
+    {mentors.map((m,i)=>(
+      <SwiperSlide key={i}>
+        <div className="group relative rounded-xl h-[420px] flex flex-col justify-end mt-6 overflow-hidden">
+          <img src={m.img} alt={m.name} className="rounded-2xl w-full h-full object-cover group-hover:scale-105 transition-all duration-700"/>
+          <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white p-4 rounded-b-2xl opacity-0 translate-y-4 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0">
+            <h3 className="font-bold text-lg">{m.name}</h3>
+            <p className="text-sm">{m.text}</p>
           </div>
-        </section>
+        </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
+</div>
+
+          </section>
+
+          <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
+            <div className="max-w-[1200px] mx-auto text-center px-4">
+              <h2 className="text-3xl font-bold mb-2">Izohlar</h2>
+              <p className={`${isDark?"text-gray-300":"text-gray-600"} mb-10`}>
+                O'quvchilarimiz tomonidan qoldirilgan izohlar
+              </p>
+
+              <Swiper
+                breakpoints={{
+                  320: { slidesPerView: 1, spaceBetween: 10 },
+                  640: { slidesPerView: 2, spaceBetween: 15 },
+                  1024: { slidesPerView: 3, spaceBetween: 20 },
+                }}
+                pagination={{ clickable: true }}
+                modules={[Pagination]}
+                className="mySwiper"
+              >
+                {reviews.map((r,i)=>(
+                  <SwiperSlide key={i}>
+                    <div className={`shadow-md rounded-xl p-6 text-left h-[230px] flex flex-col justify-between ${isDark?"bg-gray-800 text-white":"bg-white text-black"}`}>
+                      <span><img src="./img/quote.png" alt="quote" className="w-12 h-12"/></span>
+                      <p className="font-medium mb-4">{r.text}</p>
+                      <div className="flex items-center gap-3">
+                        <img src={r.img} alt={r.name} className="w-10 h-10 rounded-full"/>
+                        <div>
+      <h4 className="font-semibold">{r.name}</h4>
+      <div className="flex items-center gap-2 mt-2 mb-2">
+        <Rating value={5} readOnly size="small" /> 
+        <span className="text-sm text-gray-500">4 oy oldin</span>
+      </div>
+      <p className="text-sm">HTML CSS kursi o‘quvchisi</p>
+    </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </section>
 
         <Footer/>
+
       </>
     )
   }

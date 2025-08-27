@@ -13,7 +13,7 @@ function Profile() {
     }
 
 
-    axios.get("http://13.62.102.27:3000/my/profile", {
+    axios.get("http://51.20.98.175:3000/my/profile", {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {

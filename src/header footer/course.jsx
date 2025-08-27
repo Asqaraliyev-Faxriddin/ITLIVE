@@ -1,0 +1,107 @@
+    import React, { useEffect, useState } from 'react'
+    import { useUserStore } from '../store/userstore';
+    import axios from  "axios"
+    import { Swiper, SwiperSlide } from "swiper/react";
+    import { Pagination } from "swiper/modules";
+    import "swiper/css";
+    import "swiper/css/pagination";
+
+    function CourseAll() {
+
+        const [active, setActive] = useState("Barcha kurslar");
+        const { isDark, mentors, setMentors, courses, setCourses } = useUserStore();
+
+
+        useEffect(() => {
+            const fetchData = async () => {
+              try {
+                const loginRes = await axios.post("http://51.20.98.175:3000/auth/login", {
+                  phone: "+998903641207",
+                  password: "12345678",
+                });
+          
+                const token = loginRes.data?.AccessToken;
+                if (!token) return alert("Token topilmadi!");
+          
+            
+                const coursesRes = await axios.get("http://51.20.98.175:3000/course/all", {
+                  headers: { Authorization: `Bearer ${token}` },
+                });
+                setCourses(coursesRes.data.data.map(course => ({
+                  id: course.id,
+                  title: course.name,
+                  teacher: course.mentor.fullName,
+                  discount: course.discount,
+                  price: course.price,
+                  image: course.banner ? `http://51.20.98.175:3000/banner/url/${course.banner}` : "./img/php.png",
+                })));
+          
+  
+                const mentorsRes = await axios.get("http://51.20.98.175:3000/api/users/mentors", {
+                  headers: { Authorization: `Bearer ${token}` },
+                });
+                setMentors(mentorsRes.data.map(mentor => ({
+                  name: mentor.fullName,
+                  text: `${mentor.mentorProfile.job} ustoz`,
+                  img: mentor.image ? `http://51.20.98.175:3000/profile/url/${mentor.image}` : "./img/oybek.png",
+                })));
+          
+              } catch (err) {
+                console.error(err);
+              }
+            };
+          
+            fetchData();
+          }, [setCourses, setMentors]);
+          
+    return (
+    <>
+    
+    <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
+            <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map(course => (
+        <div key={course.id} className={`rounded-[8px] p-5 transition ${
+        isDark 
+            ? "bg-gray-800 text-white shadow-none" 
+            : "bg-white text-black shadow-md"
+        }`} >
+        <img
+            src={course.image}
+            alt={course.title}
+            className="rounded-[4px] mb-3 w-full h-[200px] object-cover"
+        />
+        <span className="flex gap-4 mb-2">
+            <img src="./img/user.png" alt="" />
+            {course.teacher}
+        </span>
+        <h1 className="text-[22px] md:text-[26px] font-bold">{course.title}</h1>
+        <p className={`mt-1 text-[18px] ${isDark ? "text-gray-300" : "text-gray-500"}`}>
+            Chegirma: <span className="font-bold float-right text-[20px]">{course.discount}%</span>
+        </p>
+        <p className={`mt-1 mb-2 ${isDark ? "text-gray-300" : "text-gray-500"}`}>Kurs narxi:</p>
+        <span className="opacity-90 flex justify-between">
+            <span className="line-through">
+            {course.discount
+                ? Math.round(course.price / (1 - course.discount / 100))
+                : course.price} uzs
+            </span>
+            <span className="font-bold text-[20px]">{course.price} uzs</span>
+        </span>
+        </div>
+    ))}
+
+            </div>
+
+            <div className="flex justify-center mt-6">
+            <button className="px-9 py-[9px] bg-blue-600 text-white rounded-4xl text-[15px] hover:bg-blue-400 transition">
+                Ko'proq ko'rish
+            </button>
+            </div>
+        </section>
+    
+    
+    </>
+    )
+    }
+
+    export default CourseAll
