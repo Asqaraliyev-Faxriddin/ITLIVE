@@ -10,23 +10,28 @@
   import Rating from '@mui/material/Rating';
   import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Course from './course';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import CourseAll from './header footer/course';
+
+
   function Home() {
     const { isDark } = useUserStore()
     const [active, setActive] = useState("Barcha kurslar");
     const {mentors, setMentors} = useUserStore()
     const {courses, setCourses} = useUserStore()
-
+    const {token2, setToken} = useUserStore()
+    const [loading, setLoading] = useState(false);
 
     let navigate = useNavigate()
 
     useEffect(() => {
       const fetchData = async () => {
         try {
-      
-          const loginRes = await axios.post("http://51.20.98.175:3000/auth/login", {
+          setLoading(true); 
+          const loginRes = await axios.post("http://13.49.74.5:3000/auth/login", {
             phone: "+998903641207",
-            password: "12345678",
+            password: "11201111",
           });
         
           
@@ -35,12 +40,11 @@ import Course from './course';
             if (!token) return alert("Token topilmadi!");
     
        
-            const coursesRes = await axios.get("http://51.20.98.175:3000/course/all", {
+            const coursesRes = await axios.get("http://13.49.74.5:3000/course/all", {
               headers: { Authorization: `Bearer ${token}` },
-              search:"fffffff"
             });
 
-            console.log(coursesRes.data.data[0]);
+            console.log("shh",coursesRes);
             
 
             if (coursesRes.data) {
@@ -50,8 +54,11 @@ import Course from './course';
                 teacher: course.mentor.fullName || "No teacher",
                 discount: course.discount || 0,
                 price: course.price || 0,
+                teacher_image: course.mentor.image
+                ? `http://13.49.74.5:3000/profile/url/${course.mentor.image}`
+                : "./img/user.png",
                 image: course.banner
-                  ? `http://51.20.98.175:3000/banner/url/${course.banner}`
+                  ? `http://13.49.74.5:3000/banner/url/${course.banner}`
                   : "./img/php.png",
               }));
               setCourses(mappedCourses);
@@ -64,6 +71,10 @@ import Course from './course';
         } catch (err) {
           console.error(err);
         }
+
+        finally {
+          setLoading(false); 
+        }
       };
     
       fetchData();
@@ -72,16 +83,17 @@ import Course from './course';
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const loginRes = await axios.post("http://51.20.98.175:3000/auth/login", {
+          const loginRes = await axios.post("http://13.49.74.5:3000/auth/login", {
             phone: "+998903641207",
-            password: "12345678",
+            password: "11201111",
           });
     
           if (loginRes.status === 200 || loginRes.status === 201) {
             const token = loginRes.data?.AccessToken;
+            setToken(token)
             if (!token) return alert("Token topilmadi!");
     
-            const res2 = await axios.get("http://51.20.98.175:3000/api/users/mentors", {
+            const res2 = await axios.get("http://13.49.74.5:3000/api/users/mentors", {
               headers: { Authorization: `Bearer ${token}` },
             });
     
@@ -90,7 +102,7 @@ import Course from './course';
                 name: mentor.fullName,
                 text: `${mentor.mentorProfile.job} ustoz`,
                 img: mentor.image
-                  ? `http://51.20.98.175:3000/profile/url/${mentor.image}`
+                  ? `http://13.49.74.5:3000/profile/url/${mentor.image}`
                   : "./img/oybek.png",
               }));
     
@@ -115,12 +127,14 @@ import Course from './course';
       { text: "Kurs menga yoqdi", name: "Sevinch Abdullayeva", img: "./img/user.png" },
     ];
 
+
+
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const loginRes = await axios.post("http://51.20.98.175:3000/auth/login", {
+          const loginRes = await axios.post("http://13.49.74.5:3000/auth/login", {
             phone: "+998903641207",
-            password: "12345678",
+            password: "11201111",
           });
 
           if (loginRes.status === 201 || loginRes.status === 200) {
@@ -131,7 +145,7 @@ import Course from './course';
             }
 
             const res2 = await axios.get(
-              "http://51.20.98.175:3000/api/users/mentors",
+              "http://13.49.74.5:3000/api/users/mentors",
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -146,8 +160,7 @@ import Course from './course';
                 name: mentor.fullName,
                 text: `${mentor.mentorProfile.job} ustoz`,
                 img: mentor.image
-                ? `http://51.20.98.175:3000/profile/url/${mentor.image}`
-                : "./img/oybek.png"
+                ? `http://13.49.74.5:3000/profile/url/${mentor.image}`: "./img/oybek.png"
               }));
 
               
@@ -170,8 +183,17 @@ import Course from './course';
 
     return (
       <>
-        <Header/>
         
+        
+        {loading ? (
+      <Box className="w-full h-screen flex justify-center items-center bg-white">
+        <CircularProgress />
+      </Box>
+    ) : (
+        
+        <>
+        <Header/>
+
           <main className={`w-full pt-14 ${isDark ? "bg-gray-900 text-white" : "bg-white  text-black"}`}  >
             <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-16 gap-10">
               <div className="flex-1 space-y-5 text-center md:text-left">
@@ -202,8 +224,8 @@ import Course from './course';
               </p>
             </div>
 
-            <div className="max-w-[1200px] mx-auto mt-8 flex flex-wrap justify-center md:justify-start gap-4 px-4">
-              {["Barcha kurslar","Backend","Frontend","Foundation","Mobil","IT Matematika","Buxgalteriya"].map((btn)=>(
+            <div className="max-w-[1200px] ml-auto iteams-center mt-8 flex flex-wrap justify-center md:justify-start gap-4 px-4">
+              {["Barcha kurslar","Backend","Frontend","Foundation","Mobil","SMM PRO","Buxgalteriya"].map((btn)=>(
                 <button 
                   key={btn}
                   onClick={()=>setActive(btn)}
@@ -219,47 +241,62 @@ import Course from './course';
             </div>
           </section>
 
-          <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {courses.map(course => (
-    <div key={course.id} className={`rounded-[8px] p-5 transition ${
-      isDark 
-        ? "bg-gray-800 text-white shadow-none" 
-        : "bg-white text-black shadow-md"
-    }`} >
-      <img
-        src={course.image}
-        alt={course.title}
-        className="rounded-[4px] mb-3 w-full h-[200px] object-cover"
-      />
-      <span className="flex gap-4 mb-2">
-        <img src="./img/user.png" alt="" />
-        {course.teacher}
-      </span>
-      <h1 className="text-[22px] md:text-[26px] font-bold">{course.title}</h1>
-      <p className={`mt-1 text-[18px] ${isDark ? "text-gray-300" : "text-gray-500"}`}>
-        Chegirma: <span className="font-bold float-right text-[20px]">{course.discount}%</span>
-      </p>
-      <p className={`mt-1 mb-2 ${isDark ? "text-gray-300" : "text-gray-500"}`}>Kurs narxi:</p>
-      <span className="opacity-90 flex justify-between">
-        <span className="line-through">
-          {course.discount
-            ? Math.round(course.price / (1 - course.discount / 100))
-            : course.price} uzs
-        </span>
-        <span className="font-bold text-[20px]">{course.price} uzs</span>
-      </span>
-    </div>
-  ))}
+      <CourseAll/>
 
-        </div>
+    <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
+  <div className="max-w-6xl mx-auto px-4 text-center">
+      <h2 className="text-4xl font-bold mb-4">Bizga qo'shiling</h2>
+    <p className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} mb-5 mt-5`}>
+      Bizning safimizga nafaqat o‘rganuvchi balki yetarlicha tajribangiz bo‘lsa mentor sifatida ham qo‘shilishingiz mumkin.
+    </p>
 
-        <div className="flex justify-center mt-6">
-          <button className="px-9 py-[9px] bg-blue-600 text-white rounded-4xl text-[15px] hover:bg-blue-400 transition">
-            Ko'proq ko'rish
-          </button>
-        </div>
-      </section>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mb-3 mt-6">
+  <div className={`p-6 rounded-lg shadow hover:shadow-lg transition ${
+      isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+    }`}
+  >
+    <h3 className="text-2xl font-semibold mb-2">O'quvchimisiz?</h3>
+    <p className="mb-5 mt-5">
+      Agarda o‘quvchi bo‘lsangiz bizning xalqaro darajadagi tajribali mentorlarimizga shogird bo‘ling
+    </p>
+    <a 
+      href="/register" 
+      className="bg-blue-500 text-white px-7 py-2 rounded-lg hover:bg-blue-600 transition inline-block"
+    >
+      Boshlash
+    </a>
+  </div>
+
+  <div className={`p-6 rounded-lg shadow hover:shadow-lg transition ${
+      isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+    }`}
+  >
+    <h3 className="text-2xl font-semibold mb-2">Mentormisiz?</h3>
+    <p className="mb-5 mt-5">
+      Bizning mualliflar jamoamizga qo‘shilib, o‘z tajribangizni boshqalar bilan oson va qulay platforma orqali ulashing
+    </p>
+    <a 
+      href="https://t.me/Asqaraliyev_Faxriddin" 
+      className="bg-blue-500 text-white px-7 py-2 rounded-lg hover:bg-blue-600 transition inline-block"
+    >
+      Boshlash
+    </a>
+  </div>
+</div>
+
+
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
 
           <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
             <h1 className="font-bold text-3xl md:text-4xl text-center mb-4">Tajribali Mentorlar</h1>
@@ -335,7 +372,12 @@ import Course from './course';
             </div>
           </section>
 
-        <Footer/>
+          <Footer/>
+
+          </>
+
+        )}
+
 
       </>
     )

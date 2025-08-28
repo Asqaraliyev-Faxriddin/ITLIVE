@@ -9,6 +9,7 @@ export const useUserStore = create((set)=>({
     otp:"",
     mentors: [],   
   courses: [],
+  token2:"",
 
     setFullname:(fullname)=> set({fullname}),
     setPass:(pass)=> set({pass}),
@@ -18,8 +19,8 @@ export const useUserStore = create((set)=>({
     setOtp:(otp)=> set({otp}),
 
     setMentors: (mentors) => set({ mentors }),  
-    setCourses: (courses) => set({ courses }),  
-
+  setCourses: (courses) => set({ courses }),  
+  setToken:(token) => set({ token}),  
 
 
 

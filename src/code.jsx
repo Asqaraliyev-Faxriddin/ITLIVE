@@ -40,7 +40,7 @@ function Code() {
 
     try {
       // 1️⃣ OTP tekshirish
-      const res = await axios.post("http://51.20.98.175:3000/verification/verify", {
+      const res = await axios.post("http://13.49.74.5:3000/verification/verify", {
         type: "register",
         phone,
         otp: code,
@@ -48,7 +48,7 @@ function Code() {
 
       if (res.status === 201) {
         // 2️⃣ Ro'yxatdan o'tish
-        const d = await axios.post("http://51.20.98.175:3000/auth/register", {
+        const d = await axios.post("http://13.49.74.5:3000/auth/register", {
           phone: phone,
           otp: code,
           fullName: fullname,

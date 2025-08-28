@@ -1,16 +1,24 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "./store/userstore";
+import axios from "axios";
+import {
+  TextField,
+  Button,
+  Paper,
+  Box,
+  Typography,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 function Login() {
-const [password, setPassword] = useState("");
+  const { phone, setPhone, isDark } = useUserStore();
+  const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
   const [token, setToken] = useState("");
-  const {pass,setPass} = useUserStore()
-  const {phone,setPhone} = useUserStore()
-  const {fullname,setFullname} = useUserStore()
-  const {otp,setOtp} = useUserStore()
-  let navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -20,10 +28,8 @@ const [password, setPassword] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("Bosildi");
-
     try {
-      const res = await axios.post("http://51.20.98.175:3000/auth/login", {
+      const res = await axios.post("http://13.49.74.5:3000/auth/login", {
         phone,
         password,
       });
@@ -34,13 +40,12 @@ const [password, setPassword] = useState("");
       } else {
         alert("Token topilmadi!");
       }
-
     } catch (err) {
       if (err.response) {
         if (err.response.status === 400) {
-          alert("Notog'ri kiritdiz");
+          alert("Notog'ri kiritdingiz");
         } else if (err.response.status === 500) {
-          alert("Xatolik bor");
+          alert("Server xatoligi");
         } else {
           alert(err.response.data?.message || "Xatolik yuz berdi");
         }
@@ -51,56 +56,132 @@ const [password, setPassword] = useState("");
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <section className="w-full max-w-md bg-white rounded-2xl shadow p-6">
-        <h1 className="text-2xl font-semibold text-gray-900">Kirish</h1>
-        <p className="mt-1 text-sm text-gray-500">Akkountingizga kiring.</p>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        bgcolor: isDark ? "#121212" : "#f3f4f6",
+        px: 2,
+      }}
+    >
+      <Paper
+        elevation={6}
+        sx={{
+          p: { xs: 4, sm: 6 },
+          borderRadius: 4,
+          width: "100%",
+          maxWidth: { xs: 350, sm: 450 },
+          bgcolor: isDark ? "#1e1e1e" : "#fff",
+          color: isDark ? "#fff" : "#000",
+        }}
+      >
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          mb={1}
+          textAlign="center"
+          sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}
+        >
+          Kirish
+        </Typography>
+        <Typography
+          variant="body2"
+          textAlign="center"
+          color="textSecondary"
+          mb={3}
+        >
+          Akkountingizga kiring
+        </Typography>
 
-        <form className="mt-6 grid gap-4" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="login-phone" className="block text-sm font-medium text-gray-700">
-              Telefon raqami
-            </label>
-            <input
-              id="login-phone"
-              type="text"
-              required
-              className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="+998901234567"
-              autoComplete="tel"
-              value={phone}
-              onChange={e => setPhone(e.target.value)}
-            />
-          </div>
+        <form onSubmit={handleSubmit}>
+          {/* Telefon */}
+          <TextField
+            label="Telefon raqami"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            required
+            type="tel"
+            placeholder="+998901234567"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            sx={{
+              input: { color: isDark ? "#fff" : "#000" },
+              label: { color: isDark ? "#bbb" : "#555" },
+            }}
+          />
 
-          <div>
-            <label htmlFor="login-password" className="block text-sm font-medium text-gray-700">
-              Parol
-            </label>
-            <input
-              id="login-password"
-              type="password"
-              required
-              className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="12345678"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-          </div>
+          {/* Parol */}
+          <TextField
+            label="Parol"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            required
+            type={showPass ? "text" : "password"}
+            placeholder="12345678"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPass(!showPass)}
+                    edge="end"
+                    sx={{ color: isDark ? "#fff" : "#000" }}
+                  >
+                    {showPass ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            sx={{
+              input: { color: isDark ? "#fff" : "#000" },
+              label: { color: isDark ? "#bbb" : "#555" },
+            }}
+          />
 
-          <button 
-            type="submit" 
-            className="w-full rounded-xl bg-blue-600 px-4 py-2.5 text-white font-medium hover:bg-blue-700">
+          {/* Submit button */}
+          <Button
+            variant="contained"
+            fullWidth
+            type="submit"
+            sx={{
+              mt: 2,
+              py: { xs: 1.5, sm: 2 },
+              fontSize: { xs: "0.9rem", sm: "1rem" },
+              bgcolor: "#1976d2",
+              "&:hover": { bgcolor: "#1565c0" },
+            }}
+          >
             Kirish
-          </button>
+          </Button>
         </form>
 
-        <div className="mt-4 flex items-center justify-between text-sm">
-          <a href="/" className="text-blue-600 hover:underline">Parolni unutdingizmi?</a>
-          <a href="/register" className="text-gray-600 hover:underline">Ro‘yxatdan o‘tish</a>
-        </div>
-      </section>
-    </main>
+        {/* Links */}
+        <Box
+          mt={3}
+          display="flex"
+          justifyContent="space-between"
+          fontSize={{ xs: "0.8rem", sm: "0.9rem" }}
+        >
+          <a
+            href="/"
+            style={{ color: "#1976d2", textDecoration: "underline" }}
+          >
+            Parolni unutdingizmi?
+          </a>
+          <a
+            href="/register"
+            style={{ color: isDark ? "#bbb" : "#555", textDecoration: "underline" }}
+          >
+            Ro‘yxatdan o‘tish
+          </a>
+        </Box>
+      </Paper>
+    </Box>
   );
 }
 

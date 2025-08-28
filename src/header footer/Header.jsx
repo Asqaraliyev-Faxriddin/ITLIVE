@@ -32,7 +32,7 @@ function Header() {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-6 text-[18px] z-50 relative">
+        <ul className="hidden md:flex gap-8 text-[18px] z-50 relative mr-[280px]">
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
@@ -74,17 +74,10 @@ function Header() {
 
           {/* Desktop Buttons */}
           <div className="hidden md:flex gap-2">
+        
             <Link
-              to="#"
-              className={`px-8 py-2.5 rounded-xl transition-transform hover:-translate-y-0.5 ${
-                isDark ? "!bg-white text-black" : "bg-black text-white"
-              }`}
-            >
-              Examify
-            </Link>
-            <Link
-              to="/register"
-              className="bg-blue-600 text-white px-8 py-2.5 rounded-xl transition-transform hover:-translate-y-0.5"
+              to="/login"
+              className="bg-blue-600 text-white px-8 py-2.5 rounded-xl transition-transform "
             >
               Kirish
             </Link>
