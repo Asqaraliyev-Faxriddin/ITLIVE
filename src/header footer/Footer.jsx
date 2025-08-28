@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useUserStore } from "../store/userstore";
 
 function Footer() {
   const { isDark } = useUserStore();
+  const [showVideo, setShowVideo] = useState(false);
+
+  const toggleVideo = () => setShowVideo(prev => !prev);
 
   return (
     <footer className={`w-full ${isDark ? "bg-gray-900 text-gray-200" : "bg-white text-gray-800"}`}>
@@ -23,26 +26,48 @@ function Footer() {
 
         <div className="flex gap-4 mt-3">
           <button 
+            onClick={toggleVideo}
             className={`px-5 py-2 border rounded-md transition 
               ${isDark 
                 ? "border-gray-500 hover:bg-gray-800" 
-                : "border-gray-400 hover:bg-gray-100"}`}>
-            Intro video
+                : "border-gray-400 hover:bg-gray-100"}`}
+          >
+            {showVideo ? "Orqaga" : "Intro video"}
           </button>
-          <button 
-            className={`px-5 py-2 rounded-md transition 
+
+          <a href="/boglanish" className={`px-5 py-2 rounded-md transition 
               ${isDark 
                 ? "bg-blue-500 hover:bg-blue-600 text-white" 
                 : "bg-blue-600 hover:bg-blue-700 text-white"}`}>
             Bog‘lanish
-          </button>
+          </a>
         </div>
+
+        {/* Video card */}
+        {showVideo && (
+          <div className="w-full max-w-3xl mt-5 p-4 rounded-xl shadow-xl bg-black/80 relative">
+            {/* Qizil X tugma video yopish uchun */}
+            <button 
+  onClick={toggleVideo} // Bu yerga bosilganda showVideo false bo'ladi
+  className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold hover:bg-red-700 transition"
+>
+  X
+</button>
+
+            <video 
+              src="./video/kurslar.mp4" 
+              controls 
+              autoPlay 
+              className="w-full rounded-lg shadow-lg"
+            />
+          </div>
+        )}
       </div>
 
       <div className={`border-t mt-10 ${isDark ? "border-gray-700" : "border-gray-200"}`}>
         <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center px-5 py-4 text-sm gap-2">
           <p className={`${isDark ? "text-gray-400" : "text-gray-600"}`}>
-            © ITLIVE 2024. Barcha huquqlar himoyalangan
+            © Faxriddin 2024. Barcha huquqlar himoyalangan
           </p>
           <a 
             href="#" 
