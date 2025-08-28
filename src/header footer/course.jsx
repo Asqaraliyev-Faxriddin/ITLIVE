@@ -42,7 +42,7 @@ function CourseAll() {
     if (!token) return;
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://13.49.74.5:3000/course-category/all?offset=1&limit=20", {
+        const res = await axios.get("https://faxriddin.bobur-dev.uz/course-category/all?offset=1&limit=20", {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.status === 200) {
@@ -65,7 +65,7 @@ function CourseAll() {
       const params = { offset: 1, limit: 10 };
       if (categoryId) params.category_id = categoryId;
 
-      const res = await axios.get("http://13.49.74.5:3000/course/all", {
+      const res = await axios.get("https://faxriddin.bobur-dev.uz/course/all", {
         headers: { Authorization: `Bearer ${token}` },
         params
       });
@@ -79,11 +79,9 @@ function CourseAll() {
           teacher: course.mentor?.fullName || "No teacher",
           discount: course.discount || 0,
           price: course.price || 0,
-          teacher_image: course.mentor?.image
-            ? `http://13.49.74.5:3000/profile/url/${course.mentor.image}`
-            : "./img/user.png",
+          teacher_image: course.mentor?.image ? `https://faxriddin.bobur-dev.uz/profile/url/${course.mentor.image}`  : "./img/user.png",
           image: course.banner
-            ? `http://13.49.74.5:3000/banner/url/${course.banner}`
+            ? `https://faxriddin.bobur-dev.uz/banner/url/${course.banner}`
             : "./img/php.png",
         }));
         setCourses(mapped);
@@ -95,20 +93,19 @@ function CourseAll() {
     }
   };
 
-  // Default barcha kurslar
+
   useEffect(() => {
     if (token) fetchCourses();
   }, [token]);
 
-  // Button bosilganda filter ishlaydi
   const handleCategoryClick = (name, id) => {
     setActive(name);
     if (name === "Barcha kurslar") {
-      fetchCourses(); // filter yo'q
+      fetchCourses(); 
     } else {
         console.log(id);
         
-      fetchCourses(id); // category_id bo'yicha filter
+      fetchCourses(id); 
     }
   };
 
@@ -120,7 +117,7 @@ function CourseAll() {
         </Box>
       ) : (
         <>
-          {/* Dynamic buttonlar */}
+  
           <div className="max-w-[1200px] mx-auto mt-8 flex flex-wrap justify-center md:justify-start gap-4 px-4">
             <button
               key="all"
@@ -149,7 +146,7 @@ function CourseAll() {
             ))}
           </div>
 
-          {/* Kurslar ro'yxati */}
+
           <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
             <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {courses.map(course => (

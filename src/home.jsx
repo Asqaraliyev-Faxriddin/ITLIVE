@@ -29,7 +29,7 @@ import CourseAll from './header footer/course';
       const fetchData = async () => {
         try {
           setLoading(true); 
-          const loginRes = await axios.post("http://13.49.74.5:3000/auth/login", {
+          const loginRes = await axios.post("https://faxriddin.bobur-dev.uz/auth/login", {
             phone: "+998903641207",
             password: "11201111",
           });
@@ -40,7 +40,7 @@ import CourseAll from './header footer/course';
             if (!token) return alert("Token topilmadi!");
     
        
-            const coursesRes = await axios.get("http://13.49.74.5:3000/course/all", {
+            const coursesRes = await axios.get("https://faxriddin.bobur-dev.uz/course/all", {
               headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -55,10 +55,10 @@ import CourseAll from './header footer/course';
                 discount: course.discount || 0,
                 price: course.price || 0,
                 teacher_image: course.mentor.image
-                ? `http://13.49.74.5:3000/profile/url/${course.mentor.image}`
+                ? `https://faxriddin.bobur-dev.uz/profile/url/${course.mentor.image}`
                 : "./img/user.png",
                 image: course.banner
-                  ? `http://13.49.74.5:3000/banner/url/${course.banner}`
+                  ? `https://faxriddin.bobur-dev.uz/banner/url/${course.banner}`
                   : "./img/php.png",
               }));
               setCourses(mappedCourses);
@@ -83,7 +83,7 @@ import CourseAll from './header footer/course';
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const loginRes = await axios.post("http://13.49.74.5:3000/auth/login", {
+          const loginRes = await axios.post("https://faxriddin.bobur-dev.uz/auth/login", {
             phone: "+998903641207",
             password: "11201111",
           });
@@ -93,7 +93,7 @@ import CourseAll from './header footer/course';
             setToken(token)
             if (!token) return alert("Token topilmadi!");
     
-            const res2 = await axios.get("http://13.49.74.5:3000/api/users/mentors", {
+            const res2 = await axios.get("https://faxriddin.bobur-dev.uz/api/users/mentors", {
               headers: { Authorization: `Bearer ${token}` },
             });
     
@@ -102,7 +102,7 @@ import CourseAll from './header footer/course';
                 name: mentor.fullName,
                 text: `${mentor.mentorProfile.job} ustoz`,
                 img: mentor.image
-                  ? `http://13.49.74.5:3000/profile/url/${mentor.image}`
+                  ? `https://faxriddin.bobur-dev.uz/profile/url/${mentor.image}`
                   : "./img/oybek.png",
               }));
     
@@ -132,7 +132,7 @@ import CourseAll from './header footer/course';
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const loginRes = await axios.post("http://13.49.74.5:3000/auth/login", {
+          const loginRes = await axios.post("https://faxriddin.bobur-dev.uz/auth/login", {
             phone: "+998903641207",
             password: "11201111",
           });
@@ -145,7 +145,7 @@ import CourseAll from './header footer/course';
             }
 
             const res2 = await axios.get(
-              "http://13.49.74.5:3000/api/users/mentors",
+              "https://faxriddin.bobur-dev.uz/api/users/mentors",
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -160,7 +160,7 @@ import CourseAll from './header footer/course';
                 name: mentor.fullName,
                 text: `${mentor.mentorProfile.job} ustoz`,
                 img: mentor.image
-                ? `http://13.49.74.5:3000/profile/url/${mentor.image}`: "./img/oybek.png"
+                ? `https://faxriddin.bobur-dev.uz/profile/url/${mentor.image}`: "./img/oybek.png"
               }));
 
               

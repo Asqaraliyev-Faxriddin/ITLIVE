@@ -32,7 +32,7 @@ function Course() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const loginRes = await axios.post("http://13.49.74.5:3000/auth/login", {
+        const loginRes = await axios.post("https://faxriddin.bobur-dev.uz/auth/login", {
           phone: "+998903641207",
           password: "11201111",
         });
@@ -45,7 +45,7 @@ function Course() {
           }
         
           const res2 = await axios.get(
-            "http://51.20.98.175:3000/api/users/mentors",
+            "https://faxriddin.bobur-dev.uz/api/users/mentors",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -59,9 +59,7 @@ function Course() {
             const [mentorData] = res2.data.map((mentor) => ({
               name: mentor.fullName,
               text: `${mentor.mentorProfile.job} ustoz`,
-              img: mentor.image
-              ? `http://13.49.74.5:3000/profile/url/${mentor.image}`
-              : "./img/oybek.png"
+              img: mentor.image ? `https://faxriddin.bobur-dev.uz/profile/url/${mentor.image}`  : "./img/oybek.png"
             }));
 
             

@@ -29,7 +29,7 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const res = await axios.post("http://13.49.74.5:3000/auth/login", {
+      const res = await axios.post("https://faxriddin.bobur-dev.uz/auth/login", {
         phone,
         password,
       });

@@ -39,16 +39,16 @@ function Code() {
     e.preventDefault();
 
     try {
-      // 1️⃣ OTP tekshirish
-      const res = await axios.post("http://13.49.74.5:3000/verification/verify", {
+     
+      const res = await axios.post("https://faxriddin.bobur-dev.uz/verification/verify", {
         type: "register",
         phone,
         otp: code,
       });
 
       if (res.status === 201) {
-        // 2️⃣ Ro'yxatdan o'tish
-        const d = await axios.post("http://13.49.74.5:3000/auth/register", {
+
+        const d = await axios.post("https://faxriddin.bobur-dev.uz/auth/register", {
           phone: phone,
           otp: code,
           fullName: fullname,
@@ -58,11 +58,11 @@ function Code() {
         if (d.status === 201) {
           const token = d.data?.Tokens?.AccessToken;
           if (token) {
-            // Tokenni store-ga saqlash
-            setOtp(token); // yoki setToken(token) agar sizda shunday funksiyangiz bo‘lsa
+ 
+            setOtp(token); 
             handleSnack("Muvaffaqiyatli ro'yxatdan o'tildi", "success");
 
-            // 1.5 soniyadan so‘ng profilga yo'naltirish
+  
             setTimeout(() => {
               navigate("/my/profile");
             }, 1500);
