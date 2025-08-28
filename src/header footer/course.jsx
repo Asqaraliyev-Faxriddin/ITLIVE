@@ -18,7 +18,7 @@ function CourseAll() {
   useEffect(() => {
     const login = async () => {
       try {
-        const loginRes = await axios.post("http://13.49.74.5:3000/auth/login", {
+        const loginRes = await axios.post("https://faxriddin.bobur-dev.uz/auth/login", {
           phone: "+998903641207",
           password: "11201111",
         });
