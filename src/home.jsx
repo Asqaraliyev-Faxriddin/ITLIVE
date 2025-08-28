@@ -291,7 +291,7 @@ import CourseAll from './header footer/course';
 
 
 
-
+ 
 
 
 <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
