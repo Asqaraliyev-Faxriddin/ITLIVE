@@ -22,7 +22,7 @@ function Header() {
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-colors backdrop-blur-md shadow-md ${
-        isDark ? "bg-[#0B1222]/90" : "bg-white/90"
+        isDark ? "!bg-[#0B1222]/90" : "bg-white/90"
       }`}
     >
       <div className="max-w-[1200px] ml-[6%] md:ml-[7.5%] lg:ml-[9.12%] h-[86px] flex justify-between items-center px-4 md:px-10">

@@ -10,6 +10,7 @@ import Code from './code'
 import Profile from './profile'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Course from './course';
+import My from './My';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -30,6 +31,8 @@ function App() {
         <Route path="/Login" element={<Login />} /> 
         <Route path="/code" element={<Code />} /> 
         <Route path="/" element={<Home />} /> 
+        <Route path="/my" element={<My />} /> 
+
 
 
 

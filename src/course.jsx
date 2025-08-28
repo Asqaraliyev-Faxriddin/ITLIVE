@@ -99,7 +99,11 @@ function Course() {
 
 
 
-    <CourseAll/>
+        <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
+      <CourseAll/>
+
+
+    </section>
 
       
 

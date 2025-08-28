@@ -227,7 +227,17 @@ import CourseAll from './header footer/course';
        
           </section>
 
+
+        
+    <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
       <CourseAll/>
+
+
+    </section>
+
+   
+
+        
 
     <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-10 px-4`}>
   <div className="max-w-6xl mx-auto px-4 text-center">
