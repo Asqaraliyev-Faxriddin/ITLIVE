@@ -13,7 +13,7 @@ function Profile() {
     }
 
 
-    axios.get("http://13.49.74.5:3000/my/profile", {
+    axios.get("https://faxriddin.bobur-dev.uz/my/profile", {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {

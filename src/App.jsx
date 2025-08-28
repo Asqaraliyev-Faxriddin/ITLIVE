@@ -12,6 +12,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Course from './course';
 import My from './My';
 import Contact from './contact';
+import ResetPassword from './reset.password';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -29,11 +30,13 @@ function App() {
         <Route path="/my/profile" element={<Profile />} />
         <Route path="/course" element={<Course/>} /> 
 
-        <Route path="/Login" element={<Login />} /> 
+        <Route path="/login" element={<Login />} /> 
         <Route path="/code" element={<Code />} /> 
         <Route path="/" element={<Home />} /> 
         <Route path="/my" element={<My />} /> 
         <Route path="/boglanish" element={<Contact />} /> 
+        <Route path="/reset_password" element={<ResetPassword />} /> 
+
 
 
 

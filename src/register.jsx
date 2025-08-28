@@ -45,7 +45,7 @@ function Register() {
 
     const send = { type: "register", phone };
     axios
-      .post("http://13.49.74.5:3000/verification/send", send)
+      .post("https://faxriddin.bobur-dev.uz/verification/send", send)
       .then(() => yoz())
       .then(() => navigate("/code"))
       .catch((err) =>

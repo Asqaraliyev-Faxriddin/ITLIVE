@@ -168,7 +168,7 @@ function Login() {
           fontSize={{ xs: "0.8rem", sm: "0.9rem" }}
         >
           <a
-            href="/"
+            href="/reset_password"
             style={{ color: "#1976d2", textDecoration: "underline" }}
           >
             Parolni unutdingizmi?
