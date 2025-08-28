@@ -167,12 +167,12 @@ function Login() {
           justifyContent="space-between"
           fontSize={{ xs: "0.8rem", sm: "0.9rem" }}
         >
-          <a
-            href="/reset_password"
-            style={{ color: "#1976d2", textDecoration: "underline" }}
-          >
-            Parolni unutdingizmi?
-          </a>
+       <Link
+  to="/reset_password"
+  style={{ color: "#1976d2", textDecoration: "underline" }}
+>
+  Parolni unutdingizmi?
+</Link>
           <a
             href="/register"
             style={{ color: isDark ? "#bbb" : "#555", textDecoration: "underline" }}
