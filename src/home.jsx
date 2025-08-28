@@ -294,7 +294,7 @@ import CourseAll from './header footer/course';
 
 
 
-          <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
+<section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
             <h1 className="font-bold text-3xl md:text-4xl text-center mb-4">Tajribali Mentorlar</h1>
             <p className={`text-center text-[18px] md:text-[20px] ${isDark?"text-gray-300":"text-gray-600"}`}>
               Barcha kurslarimiz tajribali mentorlar tomonidan tayyorlangan
