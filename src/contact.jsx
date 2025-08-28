@@ -7,6 +7,7 @@ import Footer from "./header footer/Footer";
 
     export default function Contact() {
     const [loading, setLoading] = useState(false);
+    
     const [status, setStatus] = useState(null);
     const { isDark } = useUserStore();
 
@@ -17,14 +18,12 @@ import Footer from "./header footer/Footer";
       setStatus(null);
     
       try {
-        // Konsolga yuborilayotgan ma'lumotlarni chiqarib ko‘ramiz
         console.log({
           fullName: e.target.fullname.value,
           phone: e.target.phone.value,
           message: e.target.message.value,
         });
     
-        // Axios to‘g‘ri ishlatilishi
         const res = await axios.post(
           "https://faxriddin.bobur-dev.uz/api/contact",
           {
@@ -37,7 +36,6 @@ import Footer from "./header footer/Footer";
           }
         );
     
-        // Agar server 201 qaytarsa - muvaffaqiyat
         if (res.status === 201) {
           setStatus("success");
         } else {
@@ -56,7 +54,20 @@ import Footer from "./header footer/Footer";
     
 
     return (
-       <>
+  
+
+        <>
+        
+                
+        {loading ? (
+      <Box className="w-full h-screen flex justify-center items-center bg-white">
+        <CircularProgress />
+      </Box>
+    ) : (
+
+
+        <>
+       
        
        <Header/>
 
@@ -207,5 +218,12 @@ Savollaringiz bo‘lsa murojaat qiling
        
        </>
 
+
+)}
+        
+        </>
+
     );
     }
+
+

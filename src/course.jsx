@@ -81,7 +81,9 @@ function Course() {
   }, []);
 
   return (
-    <>
+
+        
+        <>
       <Header/>
       
    
@@ -111,6 +113,10 @@ function Course() {
       <Footer/>
 
     </>
+
+
+
+  
   )
 }
 
