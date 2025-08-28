@@ -224,21 +224,7 @@ import CourseAll from './header footer/course';
               </p>
             </div>
 
-            <div className="max-w-[1200px] ml-auto iteams-center mt-8 flex flex-wrap justify-center md:justify-start gap-4 px-4">
-              {["Barcha kurslar","Backend","Frontend","Foundation","Mobil","SMM PRO","Buxgalteriya"].map((btn)=>(
-                <button 
-                  key={btn}
-                  onClick={()=>setActive(btn)}
-                  className={`border border-blue-600 py-2 px-5 rounded-[9px] text-[14px] transition ${
-                    active===btn 
-                    ? "text-white bg-blue-500 font-semibold"
-                    : `${isDark ? "text-blue-300 hover:bg-gray-800" : "text-blue-500 hover:bg-blue-50"}`
-                  }`}
-                >
-                  {btn}
-                </button>
-              ))}
-            </div>
+       
           </section>
 
       <CourseAll/>
