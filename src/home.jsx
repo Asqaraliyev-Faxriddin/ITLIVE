@@ -301,17 +301,16 @@ import CourseAll from './header footer/course';
             </p>
 
             <div className="max-w-[1200px] mx-auto text-center px-4">
-  <Swiper
-    slidesPerView={mentors.length < 3 ? mentors.length : 3} // dinamik
-    breakpoints={{
-      320: { slidesPerView: Math.min(mentors.length, 1), spaceBetween: 10 },
-      640: { slidesPerView: Math.min(mentors.length, 2), spaceBetween: 15 },
-      1024: { slidesPerView: Math.min(mentors.length, 3), spaceBetween: 20 },
-    }}
-    pagination={{ clickable: true }}
-    modules={[Pagination]}
-    className="mySwiper mt-8"
-  >
+            <Swiper
+  breakpoints={{
+    320: { slidesPerView: 1, spaceBetween: 10 },
+    640: { slidesPerView: 2, spaceBetween: 15 },
+    1024: { slidesPerView: 3, spaceBetween: 20 },
+  }}
+  pagination={{ clickable: true }}
+  modules={[Pagination]}
+  className="mySwiper mt-8"
+>
     {mentors.map((m,i)=>(
       <SwiperSlide key={i}>
         <div className="group relative rounded-xl h-[420px] flex flex-col justify-end mt-6 overflow-hidden">
