@@ -43,11 +43,10 @@ function Footer() {
           </a>
         </div>
 
-        {/* Video card */}
         {showVideo && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
             <div className="relative w-full max-w-3xl p-4 rounded-xl shadow-xl transform transition-transform duration-300 ">
-              {/* Qizil X tugma video yopish uchun */}
+         
               <button 
                 onClick={toggleVideo}
                 className="absolute bottom-103 right-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold hover:bg-red-700 transition"

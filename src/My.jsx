@@ -16,6 +16,8 @@ function My() {
   const { isDark } = useUserStore();
   const {mentors, setMentors} = useUserStore()
   const [loading, setLoading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(null);
+
 
   const images = [
     "./img/img5.avif",
@@ -147,39 +149,68 @@ function My() {
       </section>
 
 
-      <section className={`${isDark ? "bg-gray-900 text-white" : "bg-white text-black"} py-12`}>
-            <h1 className="font-bold text-3xl md:text-4xl text-center mb-4">Tajribali Mentorlar</h1>
-            <p className={`text-center text-[18px] md:text-[20px] ${isDark?"text-gray-300":"text-gray-600"}`}>
-              Barcha kurslarimiz tajribali mentorlar tomonidan tayyorlangan
-            </p>
+      <section
+      className={`${
+        isDark ? "bg-gray-900 text-white" : "bg-white text-black"
+      } py-12`}
+    >
+      <h1 className="font-bold text-3xl md:text-4xl text-center mb-4">
+        Tajribali Mentorlar
+      </h1>
+      <p
+        className={`text-center text-[18px] md:text-[20px] ${
+          isDark ? "text-gray-300" : "text-gray-600"
+        }`}
+      >
+        Barcha kurslarimiz tajribali mentorlar tomonidan tayyorlangan
+      </p>
 
-            <div className="max-w-[1200px] mx-auto text-center px-4">
-  <Swiper
-    slidesPerView={mentors.length < 3 ? mentors.length : 3} // dinamik
-    breakpoints={{
-      320: { slidesPerView: Math.min(mentors.length, 1), spaceBetween: 10 },
-      640: { slidesPerView: Math.min(mentors.length, 2), spaceBetween: 15 },
-      1024: { slidesPerView: Math.min(mentors.length, 3), spaceBetween: 20 },
-    }}
-    pagination={{ clickable: true }}
-    modules={[Pagination]}
-    className="mySwiper mt-8"
-  >
-    {mentors.map((m,i)=>(
-      <SwiperSlide key={i}>
-        <div className="group relative rounded-xl h-[420px] flex flex-col justify-end mt-6 overflow-hidden">
-          <img src={m.img} alt={m.name} className="rounded-2xl w-full h-full object-cover group-hover:scale-105 transition-all duration-700"/>
-          <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white p-4 rounded-b-2xl opacity-0 translate-y-4 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0">
-            <h3 className="font-bold text-lg">{m.name}</h3>
-            <p className="text-sm">{m.text}</p>
-          </div>
-        </div>
-      </SwiperSlide>
-    ))}
-  </Swiper>
-</div>
+      <div className="max-w-[1200px] mx-auto text-center px-4">
+        <Swiper
+          breakpoints={{
+            320: { slidesPerView: 1, spaceBetween: 10 },
+            640: { slidesPerView: 2, spaceBetween: 15 },
+            1024: { slidesPerView: 3, spaceBetween: 20 },
+          }}
+          pagination={{ clickable: true }}
+          modules={[Pagination, Autoplay]} // Autoplay modulini qo‘shdik
+          autoplay={{ delay: 2500, disableOnInteraction: false }}
+          loop={true} // loop ochiq qoladi, slaydlar doimiy aylanib turishi uchun
+          className="mySwiper mt-8"
+        >
+          {mentors.map((m, i) => (
+            <SwiperSlide key={i}>
+              <div
+                className="group relative rounded-xl h-[420px] flex flex-col justify-end mt-6 overflow-hidden cursor-pointer"
+                onClick={() =>
+                  setActiveIndex(activeIndex === i ? null : i)
+                }
+              >
+                <img
+                  src={m.img}
+                  alt={m.name}
+                  className="rounded-2xl w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+                />
 
-          </section>
+                {/* Hover (PC) yoki bosilganda (Mobile) */}
+                <div
+                  className={`absolute bottom-0 left-0 w-full bg-black/60 text-white p-4 rounded-b-2xl transition-all duration-700
+                  ${
+                    activeIndex === i
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0"
+                  }`}
+                >
+                  <h3 className="font-bold text-lg">{m.name}</h3>
+                  <p className="text-sm">{m.text}</p>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </section>
+
 
 
       <Footer/>

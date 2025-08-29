@@ -6,7 +6,7 @@ function ResetPassword() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
-  const [step, setStep] = useState(1); // 1: send OTP, 2: verify OTP, 3: reset password
+  const [step, setStep] = useState(1); 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
   let navigate = useNavigate()
