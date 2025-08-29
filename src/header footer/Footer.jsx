@@ -45,21 +45,23 @@ function Footer() {
 
         {/* Video card */}
         {showVideo && (
-          <div className="w-full max-w-3xl mt-5 p-4 rounded-xl shadow-xl bg-black/80 relative">
-            {/* Qizil X tugma video yopish uchun */}
-            <button 
-  onClick={toggleVideo} // Bu yerga bosilganda showVideo false bo'ladi
-  className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold hover:bg-red-700 transition"
->
-  X
-</button>
+          <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
+            <div className="relative w-full max-w-3xl p-4 rounded-xl shadow-xl transform transition-transform duration-300 ">
+              {/* Qizil X tugma video yopish uchun */}
+              <button 
+                onClick={toggleVideo}
+                className="absolute bottom-103 right-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold hover:bg-red-700 transition"
+              >
+                X
+              </button>
 
-            <video 
-              src="./video/kurslar.mp4" 
-              controls 
-              autoPlay 
-              className="w-full rounded-lg shadow-lg"
-            />
+              <video 
+                src="./video/kurslar.mp4" 
+                controls 
+                autoPlay 
+                className="w-full rounded-lg shadow-lg"
+              />
+            </div>
           </div>
         )}
       </div>
