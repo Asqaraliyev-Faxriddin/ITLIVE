@@ -47,6 +47,7 @@ import CourseAll from './header footer/course';
  
 
             if (coursesRes.data) {
+              console.log(coursesRes.data)
               const mappedCourses = coursesRes.data.data.map(course => ({
                 id: course.id,
                 title: course.name || "No title",
@@ -119,11 +120,11 @@ import CourseAll from './header footer/course';
     }, []);
     
     const reviews = [
-      { text: "Zo‘r kurs ekan 👍", name: "Avazbek Joraboyev", img: "./img/user.png" },
-      { text: "Juda ham zo‘r!", name: "Eldorbek Baxronov", img: "./img/user.png" },
-      { text: "Zo‘r", name: "Tursunqulov Islom", img: "./img/user.png" },
-      { text: "O‘qituvchilar juda zo‘r!", name: "Dilshod Karimov", img: "./img/user.png" },
-      { text: "Kurs menga yoqdi", name: "Sevinch Abdullayeva", img: "./img/user.png" },
+      { text: "Zo‘r kurs ekan 👍", name: "Avazbek Joraboyev", img: "./img/user.png",course_name:"Foundation kursi o'quvchisi" },
+      { text: "Juda ham zo‘r!", name: "Eldorbek Baxronov", img: "./img/user.png",course_name:"Smm Pro kursi o'quvchisi" },
+      { text: "Zo‘r", name: "Tursunqulov Islom", img: "./img/user.png",course_name:"Robbit kursi o'quvchisi" },
+      { text: "O‘qituvchilar juda zo‘r!", name: "Dilshod Karimov", img: "./img/user.png",course_name:"Foundation kursi o'quvchisi"  },
+      { text: "Kurs menga yoqdi", name: "Sevinch Abdullayeva", img: "./img/user.png" ,course_name:"Foundation kursi o'quvchisi" },
     ];
 
 
@@ -384,7 +385,7 @@ import CourseAll from './header footer/course';
         <Rating value={5} readOnly size="small" /> 
         <span className="text-sm text-gray-500">4 oy oldin</span>
       </div>
-      <p className="text-sm">HTML CSS kursi o‘quvchisi</p>
+      <p className="text-sm">{r.course_name}</p>
     </div>
                       </div>
                     </div>

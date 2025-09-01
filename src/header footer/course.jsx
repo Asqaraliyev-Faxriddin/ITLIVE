@@ -45,9 +45,10 @@ function CourseAll() {
         const res = await axios.get("https://faxriddin.bobur-dev.uz/course-category/all?offset=1&limit=20", {
           headers: { Authorization: `Bearer ${token}` }
         });
+        console.log("errrrrrrrrrrrrrrrrrrrrrrr",res.data);
+        
         if (res.status === 200) {
-          setCategories(res.data); 
-          console.log(res.data);
+          setCategories(res.data.data); 
           
         }
       } catch (err) {
@@ -77,7 +78,7 @@ function CourseAll() {
           id: course.id,
           title: course.name || "No title",
           teacher: course.mentor?.fullName || "No teacher",
-          discount: course.discount || 0,
+          discount: 5 || 0,
           price: course.price || 0,
           teacher_image: course.mentor?.image ? `https://faxriddin.bobur-dev.uz/profile/url/${course.mentor.image}`  : "./img/user.png",
           image: course.banner
